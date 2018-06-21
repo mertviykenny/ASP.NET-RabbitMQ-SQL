@@ -32,6 +32,13 @@
         }
 
 
+        
+        public void sendMessage(Messages.Messages m)
+        {
+            
+        }
+
+
 
 </script>
 <div>
@@ -46,7 +53,7 @@
               runat="server" value="myValue" /><br />
               &nbsp;&nbsp;
           <asp:Button id="Button2"
-           Text="Click here for greeting..."
+           Text="Add"
            OnClick="GreetingBtn_Click" 
            runat="server"/>
 

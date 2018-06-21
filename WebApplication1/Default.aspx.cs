@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.IO;
 
 namespace WebApplication1
 {
@@ -13,7 +17,7 @@ namespace WebApplication1
 
         public static string getConnectionString()
         {
-            return "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BackEndSQL;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            return Properties.Settings.Default.conn;
         }
         protected void Page_Load(object sender, EventArgs e)
         {

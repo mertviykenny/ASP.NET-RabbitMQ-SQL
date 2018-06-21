@@ -26,9 +26,9 @@ namespace WebApplication1.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\\\MSSQLLocalDB;Initial Catalog=BackEndSQL;Integrated Securit" +
-            "y=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;Application" +
-            "Intent=ReadWrite;MultiSubnetFailover=False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BackEndSQL;Integrated Security" +
+            "=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationI" +
+            "ntent=ReadWrite;MultiSubnetFailover=False")]
         public string conn {
             get {
                 return ((string)(this["conn"]));
