@@ -32,7 +32,7 @@ namespace RabbitMQ
             return factory;
         }
 
-        public void InsertIntoDb(Messages.Messages m)
+        public static void InsertIntoDb(Messages.Messages m)
         {
             string conn = getConnectionString();
             using (SqlConnection connection = new SqlConnection(conn))
@@ -44,7 +44,7 @@ namespace RabbitMQ
             }
         }
 
-static void Main(string[] args)
+        public static void AddThread()
         {
             var factory = getFactory();
             using (var connection = factory.CreateConnection())
@@ -65,11 +65,18 @@ static void Main(string[] args)
                         IBasicProperties props = result.BasicProperties;
                         byte[] body = result.Body;
                         Messages.Messages m = Messages.Messages.DeserializeFromByte(body);
-                        Console.WriteLine("[Add]"+m.name+" "+m.value);
+                        InsertIntoDb(m);
+                        Console.WriteLine("[Add]" + m.name + " " + m.value);
                     }
                 }
             }
+        }
 
+static void Main(string[] args)
+        {
+            System.Threading.Thread t = new System.Threading.Thread(AddThread);
+            t.Start();
+            Console.ReadLine();
         }
     }
 }
