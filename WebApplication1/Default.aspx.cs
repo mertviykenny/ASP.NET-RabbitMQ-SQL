@@ -8,6 +8,9 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.IO;
+using RabbitMQ;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace WebApplication1
 {
@@ -19,6 +22,19 @@ namespace WebApplication1
         {
             return Properties.Settings.Default.conn;
         }
+
+        public ConnectionFactory getFactory()
+        {
+            var factory = new ConnectionFactory()
+            {
+                UserName = Properties.Settings.Default.rabbitMQUsername,
+                Password = Properties.Settings.Default.rabbitMQPassword,
+                HostName = Properties.Settings.Default.rabbitMQHostName,
+                VirtualHost = Properties.Settings.Default.rabbitMQVhost
+            };
+            return factory;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 

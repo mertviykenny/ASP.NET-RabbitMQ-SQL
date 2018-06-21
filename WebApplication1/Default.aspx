@@ -10,14 +10,8 @@
         {
             string name = Input1.Value.ToString();
             string value = Text2.Value.ToString();
-            string conn = getConnectionString();
-            using (SqlConnection connection = new SqlConnection(conn))
-            {
-                SqlCommand command = new SqlCommand("insert into [dbo].[myObjectTable] values ('"+name+"','"+value+"')", connection);
-                command.Connection.Open();
-                command.ExecuteNonQuery();
-                command.Connection.Close();
-            }
+            Messages.Messages m = new Messages.Messages(name, value);
+            sendMessage(m);
         }
 
         void createTable()
@@ -32,12 +26,17 @@
         }
 
 
-        
+
         public void sendMessage(Messages.Messages m)
         {
-            
+            var factory = getFactory();
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare("Add", false, false, false, null);
+                channel.BasicPublish("", "Add", true, null, Messages.Messages.SerializeToByte(m));
+            }
         }
-
 
 
 </script>

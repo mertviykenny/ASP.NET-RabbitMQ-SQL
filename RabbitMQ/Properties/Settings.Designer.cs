@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApplication1.Properties {
+namespace RabbitMQ.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -35,39 +35,51 @@ namespace WebApplication1.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("zzyioaic")]
         public string rabbitMQUsername {
             get {
                 return ((string)(this["rabbitMQUsername"]));
             }
+            set {
+                this["rabbitMQUsername"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9OS-gT0T5xkSDaGzPksd51hB0Q4VPbpX")]
         public string rabbitMQPassword {
             get {
                 return ((string)(this["rabbitMQPassword"]));
             }
+            set {
+                this["rabbitMQPassword"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("zzyioaic")]
         public string rabbitMQVhost {
             get {
                 return ((string)(this["rabbitMQVhost"]));
             }
+            set {
+                this["rabbitMQVhost"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("hound-01.rmq.cloudamqp.com")]
         public string rabbitMQHostName {
             get {
                 return ((string)(this["rabbitMQHostName"]));
+            }
+            set {
+                this["rabbitMQHostName"] = value;
             }
         }
     }

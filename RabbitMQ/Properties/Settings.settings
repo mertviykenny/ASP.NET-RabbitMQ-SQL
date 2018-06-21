@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WebApplication1.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RabbitMQ.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="conn" Type="(Connection string)" Scope="Application">
@@ -9,16 +9,16 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BackEndSQL;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</Value>
     </Setting>
-    <Setting Name="rabbitMQUsername" Type="System.String" Scope="Application">
+    <Setting Name="rabbitMQUsername" Type="System.String" Scope="User">
       <Value Profile="(Default)">zzyioaic</Value>
     </Setting>
-    <Setting Name="rabbitMQPassword" Type="System.String" Scope="Application">
+    <Setting Name="rabbitMQPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">9OS-gT0T5xkSDaGzPksd51hB0Q4VPbpX</Value>
     </Setting>
-    <Setting Name="rabbitMQVhost" Type="System.String" Scope="Application">
+    <Setting Name="rabbitMQVhost" Type="System.String" Scope="User">
       <Value Profile="(Default)">zzyioaic</Value>
     </Setting>
-    <Setting Name="rabbitMQHostName" Type="System.String" Scope="Application">
+    <Setting Name="rabbitMQHostName" Type="System.String" Scope="User">
       <Value Profile="(Default)">hound-01.rmq.cloudamqp.com</Value>
     </Setting>
   </Settings>

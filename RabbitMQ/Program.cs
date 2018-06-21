@@ -6,36 +6,68 @@ using System.Threading.Tasks;
 using RabbitMQ;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-
+using System.Data.SqlClient;
+using System.Data.Sql;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 namespace RabbitMQ
 {
     class Program
     {
-        static void Main(string[] args)
+        public static string getConnectionString()
         {
-            Console.ForegroundColor = ConsoleColor.Red;
+            return Properties.Settings.Default.conn;
+        }
+
+        public static ConnectionFactory getFactory()
+        {
             var factory = new ConnectionFactory()
             {
-                UserName = "dyqxxsuj",
-                Password = "N8XsbtsmsuUVSjb0hx6yLV9Gi9QT1-QW",
-                HostName = "hound-01.rmq.cloudamqp.com",
-                VirtualHost = "dyqxxsuj"
+                UserName = Properties.Settings.Default.rabbitMQUsername,
+                Password = Properties.Settings.Default.rabbitMQPassword,
+                HostName = Properties.Settings.Default.rabbitMQHostName,
+                VirtualHost = Properties.Settings.Default.rabbitMQVhost
             };
+            return factory;
+        }
+
+        public void InsertIntoDb(Messages.Messages m)
+        {
+            string conn = getConnectionString();
+            using (SqlConnection connection = new SqlConnection(conn))
+            {
+                SqlCommand command = new SqlCommand("insert into [dbo].[myObjectTable] values ('" + m.name + "','" + m.value + "')", connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+                command.Connection.Close();
+            }
+        }
+
+static void Main(string[] args)
+        {
+            var factory = getFactory();
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
                 channel.BasicQos(0, 1, true);
-                channel.QueueDeclare("frontend-to-backend", false, false, false, null);
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (ch, ea) =>
+                channel.QueueDeclare("Add", false, false, false, null);
+                Console.WriteLine("Listening");
+                while (true)
                 {
-                    Console.WriteLine("Server get={0}", Encoding.UTF8.GetString(ea.Body));
-                    channel.BasicAck(ea.DeliveryTag, false);
-                };
-            }
-            while (true)
-            {
-
+                    BasicGetResult result = channel.BasicGet("Add", true);
+                    if (result == null)
+                    {
+                        // No message available at this time.
+                    }
+                    else
+                    {
+                        IBasicProperties props = result.BasicProperties;
+                        byte[] body = result.Body;
+                        Messages.Messages m = Messages.Messages.DeserializeFromByte(body);
+                        Console.WriteLine("[Add]"+m.name+" "+m.value);
+                    }
+                }
             }
 
         }
