@@ -1,0 +1,19 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WebApplication1.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="conn" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BackEndSQL;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False&lt;/ConnectionString&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BackEndSQL;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</Value>
+    </Setting>
+    <Setting Name="rabbitMQUsername" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">dyqxxsuj</Value>
+    </Setting>
+    <Setting Name="rabbitMQPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">N8XsbtsmsuUVSjb0hx6yLV9Gi9QT1-QW</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
