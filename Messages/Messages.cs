@@ -9,16 +9,16 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace Messages
 {
     [Serializable]
-    public class Messages 
+    public class Message
     {
         public string name ;
         public string value;
-        public Messages(string n, string v)
+        public Message(string n, string v)
         {
             this.name = n;
             this.value = v;
         }
-        public static byte[] SerializeToByte(Messages m)
+        public static byte[] SerializeToByte(Message m)
         {
             IFormatter formatter = new BinaryFormatter();
             byte[] bytes;
@@ -29,12 +29,12 @@ namespace Messages
             }
             return bytes;
         }
-        public static Messages DeserializeFromByte(byte[] bytes)
+        public static Message DeserializeFromByte(byte[] bytes)
         {
             IFormatter formatter = new BinaryFormatter();
             using (var ms = new MemoryStream(bytes))
             {
-                return formatter.Deserialize(ms) as Messages;
+                return formatter.Deserialize(ms) as Message;
             }
         }
     }
@@ -43,6 +43,25 @@ namespace Messages
     {
         public string username;
         public string password;
-        public string email;
+
+        public static byte[] SerializeToByte(User u)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            byte[] bytes;
+            using (var ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, u);
+                bytes = ms.ToArray();
+            }
+            return bytes;
+        }
+        public static User DeserializeFromByte(byte[] bytes)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            using (var ms = new MemoryStream(bytes))
+            {
+                return formatter.Deserialize(ms) as User;
+            }
+        }
     }
 }

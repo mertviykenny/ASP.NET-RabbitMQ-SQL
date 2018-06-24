@@ -23,7 +23,7 @@ namespace WebApplication1
             return Properties.Settings.Default.conn;
         }
 
-        public ConnectionFactory getFactory()
+        public static ConnectionFactory getFactory()
         {
             var factory = new ConnectionFactory()
             {
@@ -35,14 +35,24 @@ namespace WebApplication1
             return factory;
         }
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
 
+        public void sendMessage(Messages.Message m)
+        {
+            var factory = getFactory();
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare("Add", false, false, false, null);
+                channel.BasicPublish("", "Add", true, null, Messages.Message.SerializeToByte(m));
+            }
         }
 
-        private void InitializeComponent()
+        protected void AddBtn_Click(object sender, EventArgs e)
         {
-
+            string name = Input1.Value.ToString();
+            string value = Text2.Value.ToString();
+            Messages.Message m = new Messages.Message(name, value);
+            sendMessage(m);
         }
     }
 }

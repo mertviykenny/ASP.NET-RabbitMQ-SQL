@@ -32,7 +32,20 @@ namespace RabbitMQ
             return factory;
         }
 
-        public static void InsertIntoDb(Messages.Messages m)
+        public static void InsertIntoDb(Messages.User u)
+        {
+            string conn = getConnectionString();
+            using (SqlConnection connection = new SqlConnection(conn))
+            {
+                SqlCommand command = new SqlCommand("insert into [dbo].[users] values ('" + u.username+ "','" + u.password + "')", connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+                command.Connection.Close();
+            }
+        }
+
+
+        public static void InsertIntoDb(Messages.Message m)
         {
             string conn = getConnectionString();
             using (SqlConnection connection = new SqlConnection(conn))
@@ -44,6 +57,7 @@ namespace RabbitMQ
             }
         }
 
+
         public static void AddThread()
         {
             var factory = getFactory();
@@ -52,7 +66,7 @@ namespace RabbitMQ
             {
                 channel.BasicQos(0, 1, true);
                 channel.QueueDeclare("Add", false, false, false, null);
-                Console.WriteLine("Listening");
+                Console.WriteLine("[Add]Listening");
                 while (true)
                 {
                     BasicGetResult result = channel.BasicGet("Add", true);
@@ -64,7 +78,7 @@ namespace RabbitMQ
                     {
                         IBasicProperties props = result.BasicProperties;
                         byte[] body = result.Body;
-                        Messages.Messages m = Messages.Messages.DeserializeFromByte(body);
+                        Messages.Message m = Messages.Message.DeserializeFromByte(body);
                         InsertIntoDb(m);
                         Console.WriteLine("[Add]" + m.name + " " + m.value);
                     }
@@ -72,10 +86,70 @@ namespace RabbitMQ
             }
         }
 
-static void Main(string[] args)
+        public static void RegisterThread()
+        {
+            var factory = getFactory();
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.BasicQos(0, 1, true);
+                channel.QueueDeclare("Register", false, false, false, null);
+                Console.WriteLine("[Register]Listening");
+                while (true)
+                {
+                    BasicGetResult result = channel.BasicGet("Register", true);
+                    if (result == null)
+                    {
+                        // No message available at this time.
+                    }
+                    else
+                    {
+                        IBasicProperties props = result.BasicProperties;
+                        byte[] body = result.Body;
+                        Messages.User u = Messages.User.DeserializeFromByte(body);
+                        InsertIntoDb(u);
+                        Console.WriteLine("[Register]" + u.username + " " + u.password);
+                    }
+                }
+            }
+        }
+
+        public static void LoginThread()
+        {
+            var factory = getFactory();
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.BasicQos(0, 1, true);
+                channel.QueueDeclare("Login", false, false, false, null);
+                Console.WriteLine("[Login]Listening");
+                while (true)
+                {
+                    BasicGetResult result = channel.BasicGet("Login", true);
+                    if (result == null)
+                    {
+                        // No message available at this time.
+                    }
+                    else
+                    {
+                        IBasicProperties props = result.BasicProperties;
+                        byte[] body = result.Body;
+                        Messages.User u = Messages.User.DeserializeFromByte(body);
+                        //FindUser();
+                        Console.WriteLine("[Login]" + u.username + " " + u.password);
+                    }
+                }
+            }
+        }
+
+
+        static void Main(string[] args)
         {
             System.Threading.Thread t = new System.Threading.Thread(AddThread);
             t.Start();
+            var t2= new System.Threading.Thread(RegisterThread);
+            t2.Start();
+
             Console.ReadLine();
         }
     }

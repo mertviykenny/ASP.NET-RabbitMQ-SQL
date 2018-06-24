@@ -6,39 +6,6 @@
             //Button2.Attributes.Add("onclick", "javascript:alert('ALERT ALERT!!!"+Input1.Value.ToString()+"');");
         }
 
-        void GreetingBtn_Click(Object sender, EventArgs e)
-        {
-            string name = Input1.Value.ToString();
-            string value = Text2.Value.ToString();
-            Messages.Messages m = new Messages.Messages(name, value);
-            sendMessage(m);
-        }
-
-        void createTable()
-        {
-            string conn = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BackEndSQL;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            using (SqlConnection connection = new SqlConnection(conn))
-            {
-                SqlCommand command = new SqlCommand("create table myObjectTable(id int identity,name varchar(100),value varchar(100))", connection);
-                command.Connection.Open();
-                command.ExecuteNonQuery();
-            }
-        }
-
-
-
-        public void sendMessage(Messages.Messages m)
-        {
-            var factory = getFactory();
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                channel.QueueDeclare("Add", false, false, false, null);
-                channel.BasicPublish("", "Add", true, null, Messages.Messages.SerializeToByte(m));
-            }
-        }
-
-
 </script>
 <div>
     Site about some abstract entity.<br />
@@ -53,7 +20,7 @@
               &nbsp;&nbsp;
           <asp:Button id="Button2"
            Text="Add"
-           OnClick="GreetingBtn_Click" 
+           OnClick="AddBtn_Click" 
            runat="server"/>
 
 </div>
