@@ -43,7 +43,25 @@ namespace RabbitMQ
                 command.Connection.Close();
             }
         }
-
+        public static bool CheckIfUserExists(Messages.User u)
+        {
+            string conn = getConnectionString();
+            using (SqlConnection connection = new SqlConnection(conn))
+            {
+                SqlCommand command = new SqlCommand("select * from [dbo].[users] where username='" + u.username + "' and password='" + u.password + "'", connection);
+                command.Connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return true;
+                    }
+                    reader.Close();
+                    command.Connection.Close();
+                }
+                return false;
+            }
+        }
 
         public static void InsertIntoDb(Messages.Message m)
         {
@@ -135,12 +153,26 @@ namespace RabbitMQ
                         IBasicProperties props = result.BasicProperties;
                         byte[] body = result.Body;
                         Messages.User u = Messages.User.DeserializeFromByte(body);
-                        //FindUser();
-                        Console.WriteLine("[Login]" + u.username + " " + u.password);
+                        bool isLogged=CheckIfUserExists(u);
+                        Console.WriteLine("[Login]" + u.username + " " + u.password + " "+((isLogged) ? "is exists" : "doesn't exists"));
+                        channel.QueueDeclare(props.CorrelationId, false, false, true, null);
+                        if (isLogged)
+                        {
+                            
+                            channel.BasicPublish("",props.CorrelationId, false,null, Encoding.UTF8.GetBytes("200"));   
+                            return;//200;
+                        }
+                        else
+                        {
+                            channel.BasicPublish("", props.CorrelationId, false, null, Encoding.UTF8.GetBytes("404"));
+                            return;//404
+                        }
+                        
                     }
                 }
             }
         }
+
 
 
         static void Main(string[] args)
@@ -149,6 +181,8 @@ namespace RabbitMQ
             t.Start();
             var t2= new System.Threading.Thread(RegisterThread);
             t2.Start();
+            var t3= new System.Threading.Thread(LoginThread);
+            t3.Start();
 
             Console.ReadLine();
         }
